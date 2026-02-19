@@ -1,0 +1,23 @@
+services:
+  unoptimised_inertia_service:
+    class: Unoptimised\InertiaBundle\Service\Inertia
+    public: false
+    arguments:
+      - '%inertia.version%'
+      - '%inertia.root_view%'
+      - '@request_stack'
+      - '@twig'
+      - '@serializer'
+
+  Unoptimised\InertiaBundle\Service\InertiaInterface: '@unoptimised_inertia_service'
+
+  Unoptimised\InertiaBundle\EventListener\InertiaListener:
+    arguments:
+      - '@unoptimised_inertia_service'
+    tags:
+      - { name: kernel.event_listener, event: kernel.request, method: onKernelRequest, priority: 50 }
+      - { name: kernel.event_listener, event: kernel.response, method: onKernelResponse }
+
+  Unoptimised\InertiaBundle\Twig\InertiaExtension:
+    tags:
+      - { name: twig.extension }

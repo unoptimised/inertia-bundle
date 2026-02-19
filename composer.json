@@ -1,0 +1,20 @@
+{
+    "name": "unoptimised/inertia-bundle",
+    "description": "A Symfony bundle for Inertia.js",
+    "type": "symfony-bundle",
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "Unoptimised\\InertiaBundle\\": "src/"
+        }
+    },
+    "require": {
+        "symfony/http-kernel": "^5.4",
+        "symfony/dependency-injection": "^5.4",
+        "symfony/config": "^5.4",
+        "twig/twig": "^3.00"
+    },
+    "require-dev": {
+        "symfony/serializer": "^5.4"
+    }
+}

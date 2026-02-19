@@ -1,0 +1,10 @@
+services:
+  app:
+    build:
+      context: .
+      dockerfile: .docker/Dockerfile
+    volumes:
+      - ./:/app:z
+    environment:
+      APP_ENV: dev
+      COMPOSER_MEMORY_LIMIT: -1
