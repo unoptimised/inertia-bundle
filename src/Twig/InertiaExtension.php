@@ -3,6 +3,8 @@
 namespace Unoptimised\InertiaBundle\Twig;
 
 use Twig\Extension\AbstractExtension;
+use Twig\Markup;
+use Twig\TwigFunction;
 
 class InertiaExtension extends AbstractExtension
 {
