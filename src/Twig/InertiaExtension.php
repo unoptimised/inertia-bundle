@@ -1,6 +1,6 @@
 <?php
 
-namespace Twig;
+namespace Unoptimised\InertiaBundle\Twig;
 
 use Twig\Extension\AbstractExtension;
 

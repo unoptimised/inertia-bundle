@@ -1,10 +1,11 @@
 <?php
 
-namespace EventListener;
+namespace Unoptimised\InertiaBundle\EventListener;
 
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Event\RequestEvent;
 use Symfony\Component\HttpKernel\Event\ResponseEvent;
+use Unoptimised\InertiaBundle\Service\Inertia;
 
 class InertiaListener
 {

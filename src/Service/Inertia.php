@@ -1,6 +1,6 @@
 <?php
 
-namespace Service;
+namespace Unoptimised\InertiaBundle\Service;
 
 use LogicException;
 use Symfony\Component\HttpFoundation\RequestStack;
