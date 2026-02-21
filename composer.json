@@ -8,6 +8,11 @@
             "Unoptimised\\InertiaBundle\\": "src/"
         }
     },
+    "autoload-dev": {
+        "psr-4": {
+            "Unoptimised\\InertiaBundle\\Tests\\": "tests/"
+        }
+    },
     "require": {
         "symfony/http-kernel": "^5.4",
         "symfony/dependency-injection": "^5.4",
@@ -15,6 +20,7 @@
         "twig/twig": "^3.00"
     },
     "require-dev": {
-        "symfony/serializer": "^5.4"
+        "symfony/serializer": "^5.4",
+        "phpunit/phpunit": "^13"
     }
 }
