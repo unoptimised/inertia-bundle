@@ -27,7 +27,7 @@ Register the bundle in `config/bundles.php`:
 ```php
 return [
     // ...
-    Unoptimised\InertiaBundle\InertiaBundle::class => ['all' => true],
+    Unoptimised\InertiaBundle\UnoptimisedInertiaBundle::class => ['all' => true],
 ];
 ```
 
@@ -95,7 +95,7 @@ The `{{ inertia(page) }}` Twig function is provided by the bundle and outputs th
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use YourVendor\InertiaBundle\Inertia;
+use Unoptimised\InertiaBundle\Service\Inertia;
 
 class EventController extends AbstractController
 {
@@ -115,26 +115,6 @@ class EventController extends AbstractController
 }
 ```
 
-### Option B — Use the `InertiaControllerTrait`
-
-```php
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\Response;
-use YourVendor\InertiaBundle\Controller\InertiaControllerTrait;
-
-class DashboardController extends AbstractController
-{
-    use InertiaControllerTrait;
-
-    public function index(): Response
-    {
-        return $this->inertia('Dashboard/Index', [
-            'stats' => $this->getStats(),
-        ]);
-    }
-}
-```
-
 ---
 
 ## Shared Props
@@ -147,7 +127,7 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpKernel\Event\RequestEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\Security\Core\Security;
-use YourVendor\InertiaBundle\Inertia;
+use Unoptimised\InertiaBundle\Service\Inertia;
 
 class InertiaShareSubscriber implements EventSubscriberInterface
 {
