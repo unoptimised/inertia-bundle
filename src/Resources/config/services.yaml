@@ -1,5 +1,7 @@
 services:
   unoptimised_inertia_service:
+    autowire: true
+    autoconfigure: true
     class: Unoptimised\InertiaBundle\Service\Inertia
     public: false
     arguments:
@@ -9,7 +11,7 @@ services:
       - '@twig'
       - '@serializer'
 
-  Unoptimised\InertiaBundle\Service\InertiaInterface: '@unoptimised_inertia_service'
+  Unoptimised\InertiaBundle\Service\Inertia: '@unoptimised_inertia_service'
 
   Unoptimised\InertiaBundle\EventListener\InertiaListener:
     arguments:
