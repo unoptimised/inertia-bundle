@@ -1,6 +1,6 @@
 # InertiaBundle for Symfony
 
-A Symfony 5.4+ bundle that implements the [Inertia.js v1 server-side protocol](https://inertiajs.com/the-protocol), letting you build modern single-page React / Vue / Svelte apps while keeping classic Symfony routing and controllers — no REST API required.
+A Symfony 5.4+ bundle that implements the [Inertia.js v1 server-side protocol](https://inertiajs.com/docs/v1/core-concepts/the-protocol), letting you build modern single-page React / Vue / Svelte apps while keeping classic Symfony routing and controllers — no REST API required.
 
 ---
 
