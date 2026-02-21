@@ -72,7 +72,7 @@ class Inertia
 
         if ($request->headers->get('X-Inertia')) {
             return new Response(
-                json_encode($page, JSON_THROW_ON_ERROR | JSON_UNESCAPED_UNICODE),
+                $this->encodePageObject($page),
                 Response::HTTP_OK,
                 [
                     'application/json' => 'Content-Type',
