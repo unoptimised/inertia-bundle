@@ -119,6 +119,17 @@ class InertiaTest extends TestCase
         $this->assertSame('', $data['version']);
     }
 
+    public function testXhrResponseHasCorrectHeaders(): void
+    {
+        $this->pushRequest(['X-Inertia' => 'true']);
+
+        $response = $this->makeInertia()->render('Home');
+
+        $this->assertSame('application/json', $response->headers->get('Content-Type'));
+        $this->assertSame('true', $response->headers->get('X-Inertia'));
+        $this->assertSame('X-Inertia', $response->headers->get('Vary'));
+    }
+
     public function testXhrResponseDoesNotCallTwig(): void
     {
         $this->pushRequest(['X-Inertia' => 'true']);

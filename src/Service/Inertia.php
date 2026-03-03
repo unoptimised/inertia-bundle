@@ -75,9 +75,9 @@ class Inertia
                 $this->encodePageObject($page),
                 Response::HTTP_OK,
                 [
-                    'application/json' => 'Content-Type',
-                    'true' => 'X-Inertia',
-                    'X-Inertia' => 'Vary',
+                    'Content-Type' => 'application/json',
+                    'X-Inertia' => 'true',
+                    'Vary' => 'X-Inertia',
                 ]
             );
         }
