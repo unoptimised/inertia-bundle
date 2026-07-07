@@ -14,7 +14,7 @@ class Configuration implements ConfigurationInterface
 
         $rootNode
             ->children()
-                ->scalarNode('root_view')->defaultValue('@Inertia/Inertia')->end()
+                ->scalarNode('root_view')->defaultValue('@UnoptimisedInertia/inertia.html.twig')->end()
                 ->scalarNode('version')->defaultNull()->end()
             ->end()
         ;

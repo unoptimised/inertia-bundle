@@ -17,7 +17,7 @@ class InertiaExtension extends Extension
         $container->setParameter('inertia.root_view', $config['root_view']);
         $container->setParameter('inertia.version', $config['version']);
 
-        $loader = new YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
+        $loader = new YamlFileLoader($container, new FileLocator(__DIR__.'/../../config'));
         $loader->load('services.yaml');
     }
 
