@@ -9,7 +9,7 @@ services:
       - '%inertia.root_view%'
       - '@request_stack'
       - '@twig'
-      - '@serializer'
+      - '@serializer?'
 
   Unoptimised\InertiaBundle\Service\Inertia: '@unoptimised_inertia_service'
 
