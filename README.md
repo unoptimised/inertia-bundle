@@ -1,6 +1,6 @@
 # InertiaBundle for Symfony
 
-A Symfony 5.4+ bundle that implements the [Inertia.js v1 server-side protocol](https://inertiajs.com/docs/v1/core-concepts/the-protocol), letting you build modern single-page React / Vue / Svelte apps while keeping classic Symfony routing and controllers — no REST API required.
+A Symfony 5.4 / 6.4 bundle that implements the [Inertia.js v1 server-side protocol](https://inertiajs.com/docs/v1/core-concepts/the-protocol), letting you build modern single-page React / Vue / Svelte apps while keeping classic Symfony routing and controllers — no REST API required.
 
 ---
 
@@ -58,14 +58,14 @@ inertia:
 Or set it programmatically in a subscriber/listener:
 
 ```php
-$inertia->version(md5_file(public_path('build/manifest.json')));
+$inertia->setVersion(md5_file(public_path('build/manifest.json')));
 ```
 
 ---
 
 ## Root Layout Template
 
-Copy `vendor/your-vendor/inertia-bundle/templates/base.html.twig` to `templates/base.html.twig` and adjust it to your needs:
+The bundle ships a minimal root template at `@UnoptimisedInertia/inertia.html.twig` used by default. Copy it to your own `templates/` directory and point `root_view` at it:
 
 ```twig
 <!DOCTYPE html>
@@ -126,7 +126,7 @@ Shared props are merged into every Inertia response. Set them in a kernel event 
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpKernel\Event\RequestEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
-use Symfony\Component\Security\Core\Security;
+use Symfony\Bundle\SecurityBundle\Security;
 use Unoptimised\InertiaBundle\Service\Inertia;
 
 class InertiaShareSubscriber implements EventSubscriberInterface
@@ -184,12 +184,11 @@ return $this->inertia->render('Reports/Show', [
 
 ## Partial Reloads
 
-The Inertia client sends `X-Inertia-Partial-Data` (comma-separated prop names to include) and/or `X-Inertia-Partial-Except` (names to exclude). The bundle handles this transparently — `errors` is always included regardless.
+The Inertia client sends `X-Inertia-Partial-Data` (comma-separated prop names to include) alongside `X-Inertia-Partial-Component` to scope the reload to a specific component. The bundle handles this transparently.
 
 ```
 X-Inertia-Partial-Component: Events/Index
-X-Inertia-Partial-Data: events          ← only return this prop
-X-Inertia-Partial-Except: sidebar       ← return everything except this
+X-Inertia-Partial-Data: events,filters   ← only return these props
 ```
 
 ---
