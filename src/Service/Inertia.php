@@ -143,6 +143,6 @@ class Inertia implements InertiaInterface
             $json =  json_encode($page, JSON_THROW_ON_ERROR | JSON_UNESCAPED_UNICODE);
         }
 
-        return (array) json_decode($json, false);
+        return json_decode($json, true);
     }
 }
