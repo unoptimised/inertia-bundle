@@ -3,6 +3,7 @@
 namespace Unoptimised\InertiaBundle\Service;
 
 use LogicException;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Serializer\SerializerInterface;
@@ -80,19 +81,18 @@ class Inertia implements InertiaInterface
             $allProps = $this->resolveProps($allProps);
         }
 
-        $page = [
+        $page = $this->serialize([
             'component' => $component,
             'props'     => $allProps,
             'url'       => $request->getRequestUri(),
             'version'   => $this->version ?? '',
-        ];
+        ]);
 
         if ($request->headers->get('X-Inertia')) {
-            return new Response(
-                $this->encodePageObject($page),
+            return new JsonResponse(
+                $page,
                 Response::HTTP_OK,
                 [
-                    'Content-Type' => 'application/json',
                     'X-Inertia' => 'true',
                     'Vary' => 'X-Inertia',
                 ]
@@ -133,14 +133,16 @@ class Inertia implements InertiaInterface
         return $result;
     }
 
-    private function encodePageObject(array $page): string
+    private function serialize(array $page): array
     {
         if ($this->serializer) {
-            return $this->serializer->serialize($page, 'json', [
+            $json = $this->serializer->serialize($page, 'json', [
                 'json_encode_options' => JSON_UNESCAPED_UNICODE | JSON_THROW_ON_ERROR,
             ]);
+        } else {
+            $json =  json_encode($page, JSON_THROW_ON_ERROR | JSON_UNESCAPED_UNICODE);
         }
 
-        return json_encode($page, JSON_THROW_ON_ERROR | JSON_UNESCAPED_UNICODE);
+        return (array) json_decode($json, false);
     }
 }
