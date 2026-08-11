@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ block('title', 'My App') }}</title>
+    <title>{% block title %}My App{% endblock %}</title>
     {% block stylesheets %}
         {# Add your CSS assets here, e.g. via Webpack Encore #}
     {% endblock %}
