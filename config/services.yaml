@@ -12,6 +12,7 @@ services:
       - '@serializer?'
 
   Unoptimised\InertiaBundle\Service\Inertia: '@unoptimised_inertia_service'
+  Unoptimised\InertiaBundle\Service\InertiaInterface: '@unoptimised_inertia_service'
 
   Unoptimised\InertiaBundle\EventListener\InertiaListener:
     arguments:

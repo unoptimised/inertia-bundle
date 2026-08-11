@@ -8,9 +8,10 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Serializer\SerializerInterface;
 use Twig\Environment;
 
-class Inertia
+class Inertia implements InertiaInterface
 {
     private array $sharedProps = [];
+    private array $viewData = [];
 
     public function __construct(
         private ?string $version,
@@ -35,6 +36,21 @@ class Inertia
         return $this->sharedProps;
     }
 
+    public function getShared(string $key): mixed
+    {
+        return $this->sharedProps[$key] ?? null;
+    }
+
+    public function viewData(string $key, $value = null): void
+    {
+        $this->viewData[$key] = $value;
+    }
+
+    public function getViewData(string $key): mixed
+    {
+        return $this->viewData[$key] ?? null;
+    }
+
     public function getVersion(): ?string
     {
         return $this->version;
@@ -45,7 +61,7 @@ class Inertia
         $this->version = $version;
     }
 
-    public function render(string $component, array $props = []): Response
+    public function render(string $component, array $props = [], array $viewData = []): Response
     {
         $request = $this->requestStack->getCurrentRequest();
 
@@ -53,6 +69,7 @@ class Inertia
             throw new LogicException('Cannot render an Inertia response outside of a request context.');
         }
 
+        $viewData = array_merge($this->viewData, $viewData);
         $allProps = array_merge($this->sharedProps, $props);
         $partialComponent = $request->headers->get('X-Inertia-Partial-Component');
         $partialData = $request->headers->get('X-Inertia-Partial-Data');
@@ -84,6 +101,7 @@ class Inertia
 
         $html = $this->twig->render($this->rootView, [
             'page' => $page,
+            'viewData' => $viewData,
         ]);
 
         return new Response($html);
