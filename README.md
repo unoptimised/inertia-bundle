@@ -1,6 +1,18 @@
 # InertiaBundle for Symfony
 
-A Symfony 5.4 / 6.4 bundle that implements the [Inertia.js v1 server-side protocol](https://inertiajs.com/docs/v1/core-concepts/the-protocol), letting you build modern single-page React / Vue / Svelte apps while keeping classic Symfony routing and controllers — no REST API required.
+A Symfony 6.4 / 7.4 bundle that implements the [Inertia.js v1 server-side protocol](https://inertiajs.com/docs/v1/core-concepts/the-protocol), letting you build modern single-page React / Vue / Svelte apps while keeping classic Symfony routing and controllers — no REST API required.
+
+## Requirements
+
+| | |
+|---|---|
+| PHP | 8.2 – 8.5 |
+| Symfony | 6.4 LTS or 7.4 LTS |
+| Twig | 3.12+ (via `symfony/twig-bundle`) |
+
+`symfony/serializer` is optional. When it is installed the bundle uses it to normalise
+props, so you can pass entities and DTOs directly; without it props are encoded with
+plain `json_encode` and must already be scalars/arrays.
 
 ---
 
@@ -58,7 +70,8 @@ inertia:
 Or set it programmatically in a subscriber/listener:
 
 ```php
-$inertia->setVersion(md5_file(public_path('build/manifest.json')));
+// $projectDir is Symfony's kernel.project_dir parameter
+$inertia->setVersion(md5_file($projectDir.'/public/build/manifest.json'));
 ```
 
 ---
@@ -89,17 +102,19 @@ The `{{ inertia(page) }}` Twig function is provided by the bundle and outputs th
 
 ## Usage in Controllers
 
-### Option A — Inject `Inertia` directly (recommended with autowiring)
+Inject `InertiaInterface` and autowiring will resolve it. `Inertia` works too, but
+prefer the interface — it keeps your controllers decoupled from the implementation
+and is trivial to stub in tests.
 
 ```php
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Annotation\Route;
-use Unoptimised\InertiaBundle\Service\Inertia;
+use Symfony\Component\Routing\Attribute\Route;
+use Unoptimised\InertiaBundle\Service\InertiaInterface;
 
 class EventController extends AbstractController
 {
-    public function __construct(private readonly Inertia $inertia) {}
+    public function __construct(private readonly InertiaInterface $inertia) {}
 
     #[Route('/events/{id}', name: 'events.show')]
     public function show(Event $event): Response
@@ -127,12 +142,12 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpKernel\Event\RequestEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Bundle\SecurityBundle\Security;
-use Unoptimised\InertiaBundle\Service\Inertia;
+use Unoptimised\InertiaBundle\Service\InertiaInterface;
 
 class InertiaShareSubscriber implements EventSubscriberInterface
 {
     public function __construct(
-        private readonly Inertia $inertia,
+        private readonly InertiaInterface $inertia,
         private readonly Security $security,
     ) {}
 
@@ -217,7 +232,7 @@ The Inertia client automatically makes validation errors available to your form 
 
 ## Asset Versioning
 
-Set `inertia.version` in config (or call `$inertia->version(...)` at runtime). On every request the bundle compares the client-sent `X-Inertia-Version` header against the server version. If they differ the bundle returns:
+Set `inertia.version` in config (or call `$inertia->setVersion(...)` at runtime). On every request the bundle compares the client-sent `X-Inertia-Version` header against the server version. If they differ the bundle returns:
 
 ```
 HTTP/1.1 409 Conflict

@@ -11,6 +11,8 @@ use Twig\Environment;
 
 class Inertia implements InertiaInterface
 {
+    public const JSON_FLAGS = JSON_THROW_ON_ERROR | JSON_UNESCAPED_UNICODE;
+
     private array $sharedProps = [];
     private array $viewData = [];
 
@@ -81,7 +83,7 @@ class Inertia implements InertiaInterface
             $allProps = $this->resolveProps($allProps);
         }
 
-        $page = $this->serialize([
+        $json = $this->serialize([
             'component' => $component,
             'props'     => $allProps,
             'url'       => $request->getRequestUri(),
@@ -89,8 +91,8 @@ class Inertia implements InertiaInterface
         ]);
 
         if ($request->headers->get('X-Inertia')) {
-            return new JsonResponse(
-                $page,
+            return JsonResponse::fromJsonString(
+                $json,
                 Response::HTTP_OK,
                 [
                     'X-Inertia' => 'true',
@@ -100,7 +102,7 @@ class Inertia implements InertiaInterface
         }
 
         $html = $this->twig->render($this->rootView, [
-            'page' => $page,
+            'page' => json_decode($json, true, flags: JSON_THROW_ON_ERROR),
             'viewData' => $viewData,
         ]);
 
@@ -133,16 +135,14 @@ class Inertia implements InertiaInterface
         return $result;
     }
 
-    private function serialize(array $page): array
+    private function serialize(array $page): string
     {
         if ($this->serializer) {
-            $json = $this->serializer->serialize($page, 'json', [
-                'json_encode_options' => JSON_UNESCAPED_UNICODE | JSON_THROW_ON_ERROR,
+            return $this->serializer->serialize($page, 'json', [
+                'json_encode_options' => self::JSON_FLAGS,
             ]);
-        } else {
-            $json =  json_encode($page, JSON_THROW_ON_ERROR | JSON_UNESCAPED_UNICODE);
         }
 
-        return json_decode($json, true);
+        return json_encode($page, self::JSON_FLAGS);
     }
 }

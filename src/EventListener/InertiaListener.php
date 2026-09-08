@@ -5,11 +5,11 @@ namespace Unoptimised\InertiaBundle\EventListener;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Event\RequestEvent;
 use Symfony\Component\HttpKernel\Event\ResponseEvent;
-use Unoptimised\InertiaBundle\Service\Inertia;
+use Unoptimised\InertiaBundle\Service\InertiaInterface;
 
 class InertiaListener
 {
-    public function __construct(private readonly Inertia $inertia)
+    public function __construct(private readonly InertiaInterface $inertia)
     {
     }
 

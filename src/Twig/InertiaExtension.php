@@ -5,6 +5,7 @@ namespace Unoptimised\InertiaBundle\Twig;
 use Twig\Extension\AbstractExtension;
 use Twig\Markup;
 use Twig\TwigFunction;
+use Unoptimised\InertiaBundle\Service\Inertia;
 
 class InertiaExtension extends AbstractExtension
 {
@@ -17,6 +18,9 @@ class InertiaExtension extends AbstractExtension
 
     public function renderInertia(array $page): Markup
     {
-        return new Markup('<div id="app" data-page="'.htmlspecialchars(json_encode($page)).'"></div>', 'UTF-8');
+        $json = json_encode($page, Inertia::JSON_FLAGS);
+        $attribute = htmlspecialchars($json, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
+
+        return new Markup('<div id="app" data-page="'.$attribute.'"></div>', 'UTF-8');
     }
 }

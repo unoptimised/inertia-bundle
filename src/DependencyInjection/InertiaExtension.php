@@ -5,7 +5,7 @@ namespace Unoptimised\InertiaBundle\DependencyInjection;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Extension\Extension;
-use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
+use Symfony\Component\DependencyInjection\Loader\PhpFileLoader;
 
 class InertiaExtension extends Extension
 {
@@ -17,8 +17,8 @@ class InertiaExtension extends Extension
         $container->setParameter('inertia.root_view', $config['root_view']);
         $container->setParameter('inertia.version', $config['version']);
 
-        $loader = new YamlFileLoader($container, new FileLocator(__DIR__.'/../../config'));
-        $loader->load('services.yaml');
+        $loader = new PhpFileLoader($container, new FileLocator(__DIR__.'/../../config'));
+        $loader->load('services.php');
     }
 
     public function getAlias(): string
